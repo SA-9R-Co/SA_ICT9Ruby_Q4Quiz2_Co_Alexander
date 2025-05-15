@@ -1,0 +1,194 @@
+<html>
+   <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+      <title>Q4 Quiz 2 - Score Analyzer</title>
+
+      <style>
+         body {
+            background: linear-gradient(to right, white, black);
+            font-family: 'Segoe UI', sans-serif;
+         }
+
+         #cover {
+            height: 300px;
+            width: 230px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+         }
+
+         #cover:hover {
+            transform: scale(1.05);
+         }
+
+         button {
+            padding: 15px 25px;
+            cursor: pointer;
+            color: black;
+            background-color: #FFC72C;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 6px #ff9d2c;
+            font-weight: bold;
+         }
+
+         button:hover {
+            background-color: #FFC72C;
+         }
+
+         button:active {
+            background-color: #FFC72C;
+            box-shadow: 0 4px #666;
+            transform: translateY(4px);
+         }
+
+         h1 {
+            background-color: #FFC72C;
+            padding: 15px;
+            border-radius: 10px;
+            width: fit-content;
+            margin: 30px auto 10px;
+            font-family: Impact;
+            animation: slideIn 1s ease-out;
+
+         }
+
+         input[type=number] {
+            background-color: lightyellow;
+            font-size: 30px;
+            text-align: center;
+            color: darkblue;
+            width: 200px;
+            font-family: Consolas;
+            border: 2px solid darkblue;
+            border-radius: 10px;
+            margin-top: 10px;
+         }
+
+         #rating-output {
+            font-size: 25px;
+            margin-top: 20px;
+            color: #FFC72C;
+            font-weight: bold;
+         }
+
+         #source {
+            font-style: italic;
+            margin-top: 20px;
+         }
+
+         @keyframes slideIn {
+            from {
+               transform: translate(-100%);
+               opacity: 1;
+            }
+
+            to {
+               transform: translate(0);
+               opacity: 1;
+            }
+         }
+      </style>
+   </head>
+
+   <body>
+      <center>
+         <h1>Score Analyzer</h1>
+         <details ontoggle="message()">
+            <summary><strong>Click for Instructions</strong></summary>
+            <i id="instructions"></i>
+         </details>
+         <script>
+            function message() {
+               document.getElementById("instructions").innerHTML = "Click on a subject and enter your grade. Then click 'Get Rating'.";
+            }
+         </script>
+      </center>
+
+      <div class="container mt-4">
+         <div class="row justify-content-center flex-wrap text-center">
+            <div class="col-auto mb-4 mx-3">
+               <button type="button" onclick="addSubject('Filipino', 'Grade1')">
+                  <img src="https://i.pinimg.com/736x/e7/6e/48/e76e4807f3d49fdc7ed0e5ca8ba7d08c.jpg" id="cover">
+               </button>
+               <div id="div1"></div>
+            </div>
+
+            <div class="col-auto mb-4 mx-3">
+               <button type="button" onclick="addSubject('English', 'Grade2')">
+                  <img src="https://marketplace.canva.com/EAFqGjostX0/1/0/1238w/canva-blue-yellow-english-school-digital-notebook-cover-O-EOddeiynE.jpg" id="cover">
+               </button>
+               <div id="div2"></div>
+            </div>
+
+            <div class="col-auto mb-4 mx-3">
+               <button type="button" onclick="addSubject('Science', 'Grade3')">
+                  <img src="https://marketplace.canva.com/EAE-Fj_3tSU/1/0/1236w/canva-science-notebook-cover-qQN9vOBTwmQ.jpg" id="cover">
+               </button>
+               <div id="div3"></div>
+            </div>
+
+            <div class="col-auto mb-4 mx-3">
+               <button type="button" onclick="addSubject('Math', 'Grade4')">
+                  <img src="https://i.pinimg.com/736x/33/59/18/33591832924c056996f85f817a9ad021.jpg" id="cover">
+               </button>
+               <div id="div4"></div>
+            </div>
+
+            <div class="col-auto mb-4 mx-3">
+               <button type="button" onclick="addSubject('Social Studies', 'Grade5')">
+                  <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5ccdfb12-e79f-4152-9d91-3512c91032c8/dhx0z58-e94f23f1-143f-497c-8346-3517e6cd6126.jpg/v1/fill/w_1280,h_1471,q_75,strp/social_studies_notebook_for_kids_by_colorfulcraft_dhx0z58-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTQ3MSIsInBhdGgiOiJcL2ZcLzVjY2RmYjEyLWU3OWYtNDE1Mi05ZDkxLTM1MTJjOTEwMzJjOFwvZGh4MHo1OC1lOTRmMjNmMS0xNDNmLTQ5N2MtODM0Ni0zNTE3ZTZjZDYxMjYuanBnIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.vAKqcZJrP-6JnK09QdmDLghiCiB90DcP15HpVqLJGDM" id="cover">
+               </button>
+               <div id="div5"></div>
+            </div>
+         </div>
+
+         <div class="text-center">
+            <button onclick="calculateAverage()">Get Rating</button>
+            <p id="rating-output"></p>
+         </div>
+
+         <p id="source" class="text-center mt-3"><b>Note: Grading criteria may vary per school or district.</b></p>
+         <hr>
+         <p class="text-center">@Alexander Rain Co</p>
+      </div>
+
+      <script>
+         function addSubject(subject, id) {
+            document.getElementById("div" + id.slice(-1)).innerHTML = 
+               `<label>${subject} Grade:</label><br><input type="number" id="${id}" min="0" max="100">`;
+         }
+
+         function calculateAverage() {
+            let grades = [];
+            for (let i = 1; i <= 5; i++) {
+               let val = document.getElementById("Grade" + i);
+               if (val) grades.push(Number(val.value));
+            }
+
+            if (grades.length < 3) {
+               alert("Please input at least 3 subject grades.");
+               return;
+            }
+
+            let sum = grades.reduce((a, b) => a + b, 0);
+            let ave = (sum / grades.length).toFixed(2);
+            let rating = "";
+
+            if (ave >= 94 && ave <= 100) rating = "Excellent";
+            else if (ave >= 87) rating = "Above Satisfactory";
+            else if (ave >= 80) rating = "Satisfactory";
+            else if (ave >= 75) rating = "Needs Improvement";
+            else if (ave >= 70) rating = "Poor";
+            else rating = "Failing. Study harder.";
+
+            document.getElementById("rating-output").innerHTML = `Your average is ${ave} - <strong>${rating}</strong>`;
+         }
+      </script>
+   </body>
+</html>
